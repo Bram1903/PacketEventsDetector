@@ -10,3 +10,6 @@ plugins {
 }
 
 rootProject.name = "PacketEventsDetector"
+include(":common")
+include(":bukkit")
+include(":runnable")

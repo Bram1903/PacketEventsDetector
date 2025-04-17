@@ -1,6 +1,4 @@
-package com.deathmotion.packeteventsdetector;
-
-import org.bukkit.plugin.Plugin;
+package com.deathmotion.packeteventsdetector.scanner;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +8,10 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class PluginClassScanner {
-    public static List<String> getClassNames(Plugin plugin) throws IOException {
+public class ClassScanner {
+    public static List<String> getClassNames(File file) throws IOException {
         List<String> classNames = new ArrayList<>();
 
-        File file = new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
         try (JarFile jar = new JarFile(file)) {
             Enumeration<JarEntry> entries = jar.entries();
 
@@ -32,4 +29,3 @@ public class PluginClassScanner {
         return classNames;
     }
 }
-

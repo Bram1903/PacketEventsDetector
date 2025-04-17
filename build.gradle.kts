@@ -1,31 +1,17 @@
 plugins {
-    java
+    packeteventsdetector.`java-conventions`
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
-    maven { url = uri("https://repo.codemc.io/repository/maven-releases/") }
-    maven { url = uri("https://repo.codemc.io/repository/maven-snapshots/") }
-}
+group = "com.deathmotion.packeteventsdetector"
+version = "1.0.0"
 
 dependencies {
-    compileOnly(libs.paper)
-    compileOnly(libs.packetevents.api)
-    compileOnly(libs.lombok)
-    annotationProcessor(libs.lombok)
+    implementation(project(":common"))
+    implementation(project(":bukkit"))
+    implementation(project(":runnable"))
 }
-
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
-    disableAutoTargetJvm()
-}
-
-group = "com.deathmotion.packeteventsdetector"
-version = "1.0.0-SNAPSHOT"
 
 tasks {
     jar {
@@ -33,29 +19,18 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName = "${rootProject.name}-${rootProject.version}.jar"
+        archiveFileName = "${rootProject.name}-${version}.jar"
         archiveClassifier = null
+
+        manifest {
+            attributes(
+                mapOf("Main-Class" to "com.deathmotion.packeteventsdetector.PEDetectorRunnable")
+            )
+        }
     }
 
     assemble {
         dependsOn(shadowJar)
-    }
-
-    withType<JavaCompile> {
-        options.encoding = Charsets.UTF_8.name()
-        options.release = 17
-    }
-
-    defaultTasks("build")
-
-    processResources {
-        inputs.property("version", rootProject.version)
-
-        filesMatching(listOf("plugin.yml")) {
-            expand(
-                "version" to rootProject.version,
-            )
-        }
     }
 
     val version = "1.21.5"
@@ -66,13 +41,12 @@ tasks {
 
         javaLauncher = project.javaToolchains.launcherFor {
             languageVersion = JavaLanguageVersion.of(21)
-
         }
 
         downloadPlugins {
             url("https://github.com/ViaVersion/ViaVersion/releases/download/5.3.2/ViaVersion-5.3.2.jar")
             url("https://github.com/ViaVersion/ViaBackwards/releases/download/5.3.2/ViaBackwards-5.3.2.jar")
-            url("https://cdn.modrinth.com/data/LJNGWSvH/versions/ePa255As/grimac-2.3.70.jar")
+            url("https://cdn.modrinth.com/data/LJNGWSvH/versions/4CqWKZph/grimac-2.3.71.jar")
         }
 
         jvmArgs = listOf(
