@@ -7,7 +7,6 @@ version = rootProject.version
 description = project.description
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
