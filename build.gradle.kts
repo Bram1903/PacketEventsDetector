@@ -10,7 +10,6 @@ version = "1.0.0"
 dependencies {
     implementation(project(":common"))
     implementation(project(":bukkit"))
-    implementation(project(":runnable"))
 }
 
 tasks {

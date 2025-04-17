@@ -52,37 +52,30 @@ public class ScanManager<P> {
     }
 
     public PEPlugin detectPlugin(ScannableFile scannableFile) throws IOException {
-       List<String> classNames = ClassScanner.getClassNames(scannableFile.getFile());
-       PEPlugin plugin = null;
+        List<String> classNames = ClassScanner.getClassNames(scannableFile.getFile());
 
         for (String className : classNames) {
             if (!className.endsWith("PacketEvents")) continue;
 
             try {
-                Class<?> packetEventsClass = Class.forName(className, false, scannableFile.getClassLoader());
-                Method getApiMethod = packetEventsClass.getDeclaredMethod("getAPI");
+                Class<?> clazz = scannableFile.getClassLoader().loadClass(className);
+                Method getApiMethod = clazz.getDeclaredMethod("getAPI");
 
-                Object apiInstance = getApiMethod.invoke(null); // static method
+                Object apiInstance = getApiMethod.invoke(null);
                 if (apiInstance == null) continue;
 
                 Method getVersionMethod = apiInstance.getClass().getMethod("getVersion");
-                Object peVersion = getVersionMethod.invoke(apiInstance);
+                Object versionObj = getVersionMethod.invoke(apiInstance);
+                String version = (versionObj != null) ? versionObj.toString() : "Unknown";
 
-                String version;
-                try {
-                    Method toStringMethod = peVersion.getClass().getMethod("toString");
-                    version = (String) toStringMethod.invoke(peVersion);
-                } catch (Throwable ignored) {
-                    version = "Unknown";
-                }
+                return new PEPlugin(scannableFile.getName(), version);
 
-                plugin = new PEPlugin(scannableFile.getName(), version);
-                break;
-            } catch (Throwable ignore) {
-                // Ignore the exception and continue scanning
+            } catch (Throwable t) {
+                PEDetectorPlatform.getLogger().fine("Failed loading " + className + ": " + t.getMessage());
             }
         }
 
-        return plugin;
+        return null;
     }
+
 }
