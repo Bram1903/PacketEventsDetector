@@ -1,10 +1,13 @@
 package com.deathmotion.packeteventsdetector.commands;
 
 import com.deathmotion.packeteventsdetector.PEDetectorPlatform;
+import com.deathmotion.packeteventsdetector.models.PEPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class PEDetectorCommand<P> implements CommandExecutor {
 
@@ -21,7 +24,16 @@ public class PEDetectorCommand<P> implements CommandExecutor {
             return false;
         }
 
-        sender.sendMessage("Detected: " + platform.getScanManager().getPlugins().size() + " plugin(s).");
+        List<PEPlugin> plugins = platform.getScanManager().getPlugins();
+        if (plugins.isEmpty()) {
+            sender.sendMessage("§cNo plugins using PacketEvents were found.");
+            return false;
+        }
+
+        sender.sendMessage("§aPlugins using PacketEvents:");
+        for (PEPlugin plugin : plugins) {
+            sender.sendMessage("§7- " + plugin.getName() + " (v" + plugin.getVersion() + ")");
+        }
 
         return true;
     }
