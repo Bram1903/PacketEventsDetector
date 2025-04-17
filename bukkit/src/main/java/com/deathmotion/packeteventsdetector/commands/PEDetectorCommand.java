@@ -32,7 +32,7 @@ public class PEDetectorCommand<P> implements CommandExecutor {
 
         sender.sendMessage("§aPlugins using PacketEvents:");
         for (PEPlugin plugin : plugins) {
-            sender.sendMessage("§7- " + plugin.getName() + " (v" + plugin.getVersion() + ")");
+            sender.sendMessage("§7- §6" + plugin.getName() + "§7 (PE: " + plugin.getVersion() + ")");
         }
 
         return true;

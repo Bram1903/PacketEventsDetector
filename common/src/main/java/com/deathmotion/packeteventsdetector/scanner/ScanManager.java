@@ -38,11 +38,17 @@ public class ScanManager<P> {
                 if (plugin == null) return;
 
                 plugins.add(plugin);
-                PEDetectorPlatform.getLogger().info("Detected plugin: " + plugin.getName() + " (" + plugin.getVersion() + ")");
+                PEDetectorPlatform.getLogger().info("Detected plugin: " + plugin.getName() + " (PE: " + plugin.getVersion() + ")");
             } catch (Exception e) {
                 PEDetectorPlatform.getLogger().log(SEVERE, "Failed to scan file: " + file.getName(), e);
             }
         });
+
+        if (plugins.isEmpty()) {
+            PEDetectorPlatform.getLogger().info("No plugins using PacketEvents detected");
+        } else {
+            PEDetectorPlatform.getLogger().info("Scan completed. Detected " + plugins.size() + " plugin(s) using PacketEvents.");
+        }
     }
 
     public PEPlugin detectPlugin(ScannableFile scannableFile) throws IOException {

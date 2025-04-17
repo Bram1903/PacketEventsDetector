@@ -33,7 +33,7 @@ tasks {
         dependsOn(shadowJar)
     }
 
-    val version = "1.21.5"
+    val version = "1.21.4"
 
     runServer {
         minecraftVersion(version)

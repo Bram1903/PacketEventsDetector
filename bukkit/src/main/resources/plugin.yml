@@ -6,6 +6,10 @@ folia-supported: true
 author: "Bram"
 description: Plugin that tries to detect plugins that shade PacketEvents.
 load: POSTWORLD
+permissions:
+  PacketEventsDetector.Command:
+    description: "This permission allows players to use the PacketEventsDetector command."
+    default: op
 commands:
   PacketEventsDetector:
     description: Base command for PacketEventsDetector.
