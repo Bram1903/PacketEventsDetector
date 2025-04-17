@@ -1,0 +1,15 @@
+[versions]
+paper = "1.21.4-R0.1-SNAPSHOT"
+packetevents = "2.8.0-SNAPSHOT"
+lombok = "1.18.36"
+shadow = "8.3.5"
+run-paper = "2.3.1"
+
+[libraries]
+paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+packetevents-api = { group = "com.github.retrooper", name = "packetevents-api", version.ref = "packetevents" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
