@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class PEDetectorCommand<P> implements CommandExecutor {
+public class BukkitPEDCommand<P> implements CommandExecutor {
 
     private final PEDetectorPlatform<P> platform;
 
-    public PEDetectorCommand(PEDetectorPlatform<P> platform) {
+    public BukkitPEDCommand(PEDetectorPlatform<P> platform) {
         this.platform = platform;
     }
 

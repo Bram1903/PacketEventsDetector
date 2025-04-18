@@ -30,10 +30,10 @@ import org.spongepowered.api.command.parameter.ArgumentReader;
 import java.util.List;
 import java.util.Optional;
 
-public class SpongeAHICommand implements Command.Raw {
+public class SpongePEDCommand implements Command.Raw {
     private final PEDetectorSponge plugin;
 
-    public SpongeAHICommand(PEDetectorSponge plugin) {
+    public SpongePEDCommand(PEDetectorSponge plugin) {
         this.plugin = plugin;
     }
 

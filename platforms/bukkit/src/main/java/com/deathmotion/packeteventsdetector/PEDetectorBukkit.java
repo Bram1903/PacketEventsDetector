@@ -1,6 +1,6 @@
 package com.deathmotion.packeteventsdetector;
 
-import com.deathmotion.packeteventsdetector.commands.PEDetectorCommand;
+import com.deathmotion.packeteventsdetector.commands.BukkitPEDCommand;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,7 +11,7 @@ public class PEDetectorBukkit extends JavaPlugin {
     @Override
     public void onEnable() {
         ped.commonOnEnable();
-        getCommand("packeteventsdetector").setExecutor(new PEDetectorCommand<>(ped));
+        getCommand("packeteventsdetector").setExecutor(new BukkitPEDCommand<>(ped));
     }
 
     @Override

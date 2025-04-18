@@ -18,7 +18,7 @@
 
 package com.deathmotion.packeteventsdetector;
 
-import com.deathmotion.packeteventsdetector.commands.SpongeAHICommand;
+import com.deathmotion.packeteventsdetector.commands.SpongePEDCommand;
 import com.google.inject.Inject;
 import lombok.Getter;
 import org.spongepowered.api.Server;
@@ -56,7 +56,7 @@ public class PEDetectorSponge {
     public void onRegisterCommands(final RegisterCommandEvent<Command.Raw> event) {
         event.register(
                 this.pluginContainer,
-                new SpongeAHICommand(this),
+                new SpongePEDCommand(this),
                 "packeteventsdetector",
                 "ped"
         );

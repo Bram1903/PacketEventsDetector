@@ -18,7 +18,7 @@
 
 package com.deathmotion.packeteventsdetector;
 
-import com.deathmotion.packeteventsdetector.commands.BungeeAHICommand;
+import com.deathmotion.packeteventsdetector.commands.BungeePEDCommand;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -30,7 +30,7 @@ public final class PEDetectorBungee extends Plugin {
     public void onEnable() {
         ped.commonOnEnable();
 
-        new BungeeAHICommand(this);
+        new BungeePEDCommand(this);
     }
 
     @Override

@@ -21,16 +21,14 @@ package com.deathmotion.packeteventsdetector.commands;
 import com.deathmotion.packeteventsdetector.PEDetectorBungee;
 import com.sun.tools.javac.util.List;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
-public class BungeeAHICommand extends Command implements TabExecutor {
+public class BungeePEDCommand extends Command implements TabExecutor {
 
     private final PEDetectorBungee plugin;
 
-    public BungeeAHICommand(PEDetectorBungee plugin) {
+    public BungeePEDCommand(PEDetectorBungee plugin) {
         super("AntiHealthIndicator", null, "ahi");
         this.plugin = plugin;
 
