@@ -80,6 +80,16 @@ public class ScanManager<P> {
         return null;
     }
 
+    private String getVersionSafe(Object apiInstance) {
+        try {
+            Method getVersionMethod = apiInstance.getClass().getMethod("getVersion");
+            Object versionObj = getVersionMethod.invoke(apiInstance);
+            return versionObj != null ? versionObj.toString() : "Unknown";
+        } catch (Throwable ignored) {
+            return "Unknown";
+        }
+    }
+
     private PEPlugin detectPluginStatic(ScannableFile scannableFile) {
         try {
             for (String className : ClassScanner.getClassNames(scannableFile.getFile())) {
@@ -91,16 +101,6 @@ public class ScanManager<P> {
             PEDetectorPlatform.getLogger().log(SEVERE, "Failed to scan file: " + scannableFile.getName() + " for class names", e);
         }
         return null;
-    }
-
-    private String getVersionSafe(Object apiInstance) {
-        try {
-            Method getVersionMethod = apiInstance.getClass().getMethod("getVersion");
-            Object versionObj = getVersionMethod.invoke(apiInstance);
-            return versionObj != null ? versionObj.toString() : "Unknown";
-        } catch (Throwable ignored) {
-            return "Unknown";
-        }
     }
 
 }
