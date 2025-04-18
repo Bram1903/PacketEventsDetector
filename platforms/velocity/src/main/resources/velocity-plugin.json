@@ -1,0 +1,12 @@
+{
+  "id": "packeteventsdetector",
+  "name": "PacketEventsDetector",
+  "version": "${version}",
+  "description": "Plugin that tries to detect plugins that shade PacketEvents.",
+  "url": "https://github.com/Bram1903/PacketEventsDetector",
+  "authors": [
+    "Bram"
+  ],
+  "dependencies": [],
+  "main": "com.deathmotion.packeteventsdetector.PEDetectorPlugin"
+}

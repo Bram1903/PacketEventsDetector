@@ -1,13 +1,21 @@
 [versions]
 paper = "1.21.4-R0.1-SNAPSHOT"
+velocity = "3.4.0-SNAPSHOT"
+bungeecord = "1.21-R0.1-SNAPSHOT"
+sponge = "8.0.0"
 lombok = "1.18.36"
 shadow = "8.3.5"
 run-paper = "2.3.1"
+spongeGradle = "2.2.0"
 
 [libraries]
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
+bungeecord = { group = "net.md-5", name = "bungeecord-api", version.ref = "bungeecord" }
+sponge = { group = "org.spongepowered", name = "spongeapi", version.ref = "sponge" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
+spongeGradle = { id = "org.spongepowered.gradle.plugin", version.ref = "spongeGradle" }

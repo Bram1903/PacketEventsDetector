@@ -1,8 +1,7 @@
 name: PacketEventsDetector
 version: ${version}
-main: com.deathmotion.packeteventsdetector.PEDetectorBukkit
+main: com.deathmotion.packeteventsdetector.PEDetectorBungee
 api-version: '1.21'
-folia-supported: true
 author: "Bram"
 description: Plugin that tries to detect plugins that shade PacketEvents.
 website: https://github.com/Bram1903/PacketEventsDetector
