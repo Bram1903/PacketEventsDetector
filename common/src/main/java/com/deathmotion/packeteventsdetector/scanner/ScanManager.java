@@ -34,7 +34,13 @@ public class ScanManager<P> {
 
         scannableFiles.parallelStream().forEach(file -> {
             try {
-                PEPlugin plugin =  detectPlugin(file);
+                PEPlugin plugin;
+                if (platform.isStandAlone()) {
+                    plugin = detectPluginStatic(file);
+                } else {
+                    plugin = detectPlugin(file);
+                }
+
                 if (plugin == null) return;
 
                 plugins.add(plugin);
@@ -51,31 +57,50 @@ public class ScanManager<P> {
         }
     }
 
-    public PEPlugin detectPlugin(ScannableFile scannableFile) throws IOException {
-        List<String> classNames = ClassScanner.getClassNames(scannableFile.getFile());
-
-        for (String className : classNames) {
+    private PEPlugin detectPlugin(ScannableFile scannableFile) throws IOException {
+        for (String className : ClassScanner.getClassNames(scannableFile.getFile())) {
             if (!className.endsWith("PacketEvents")) continue;
 
             try {
                 Class<?> clazz = scannableFile.getClassLoader().loadClass(className);
                 Method getApiMethod = clazz.getDeclaredMethod("getAPI");
-
                 Object apiInstance = getApiMethod.invoke(null);
-                if (apiInstance == null) continue;
 
-                Method getVersionMethod = apiInstance.getClass().getMethod("getVersion");
-                Object versionObj = getVersionMethod.invoke(apiInstance);
-                String version = (versionObj != null) ? versionObj.toString() : "Unknown";
+                if (apiInstance != null) {
+                    String version = getVersionSafe(apiInstance);
+                    return new PEPlugin(scannableFile.getName(), version);
+                }
 
-                return new PEPlugin(scannableFile.getName(), version);
-
-            } catch (Throwable t) {
-                PEDetectorPlatform.getLogger().fine("Failed loading " + className + ": " + t.getMessage());
+            } catch (NoSuchMethodException ignored) {
+                // Class doesn't have a `getAPI` method
+            } catch (Throwable ignored) {
+                // Ignore other exceptions during scanning
             }
         }
-
         return null;
+    }
+
+    private PEPlugin detectPluginStatic(ScannableFile scannableFile) {
+        try {
+            for (String className : ClassScanner.getClassNames(scannableFile.getFile())) {
+                if (className.endsWith("PacketEvents")) {
+                    return new PEPlugin(scannableFile.getName(), "Unknown (Static Detection)");
+                }
+            }
+        } catch (IOException e) {
+            PEDetectorPlatform.getLogger().log(SEVERE, "Failed to scan file: " + scannableFile.getName() + " for class names", e);
+        }
+        return null;
+    }
+
+    private String getVersionSafe(Object apiInstance) {
+        try {
+            Method getVersionMethod = apiInstance.getClass().getMethod("getVersion");
+            Object versionObj = getVersionMethod.invoke(apiInstance);
+            return versionObj != null ? versionObj.toString() : "Unknown";
+        } catch (Throwable ignored) {
+            return "Unknown";
+        }
     }
 
 }

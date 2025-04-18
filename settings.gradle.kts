@@ -11,5 +11,5 @@ plugins {
 
 rootProject.name = "PacketEventsDetector"
 include(":common")
-include(":bukkit")
-include(":runnable")
+include("platforms:standalone")
+include(":platforms:bukkit")

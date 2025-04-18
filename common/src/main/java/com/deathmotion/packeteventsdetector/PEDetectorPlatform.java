@@ -3,13 +3,10 @@ package com.deathmotion.packeteventsdetector;
 import com.deathmotion.packeteventsdetector.models.ScannableFile;
 import com.deathmotion.packeteventsdetector.scanner.ScanManager;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-import java.util.logging.LogRecord;
+import java.util.logging.*;
 
 @Getter
 public abstract class PEDetectorPlatform<P> {
@@ -20,23 +17,11 @@ public abstract class PEDetectorPlatform<P> {
     @Getter
     private static Logger logger;
 
+    @Getter
+    @Setter
+    public boolean standAlone = false;
+
     private ScanManager<P> ScanManager;
-
-    /**
-     * Called when the platform is enabled.
-     */
-    public void commonOnEnable() {
-        instance = this;
-        setupLogger();
-
-        ScanManager = new ScanManager<>(this);
-    }
-
-    /**
-     * Called when the platform gets disabled.
-     */
-    public void commonOnDisable() {
-    }
 
     /**
      * Sets up the custom logger to avoid extra metadata in log output.
@@ -56,6 +41,22 @@ public abstract class PEDetectorPlatform<P> {
 
         logger.addHandler(handler);
         logger.setLevel(Level.ALL);
+    }
+
+    /**
+     * Called when the platform is enabled.
+     */
+    public void commonOnEnable() {
+        instance = this;
+        setupLogger();
+
+        ScanManager = new ScanManager<>(this);
+    }
+
+    /**
+     * Called when the platform gets disabled.
+     */
+    public void commonOnDisable() {
     }
 
     /**

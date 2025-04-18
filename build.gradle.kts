@@ -9,7 +9,8 @@ version = "1.0.0"
 
 dependencies {
     implementation(project(":common"))
-    implementation(project(":bukkit"))
+    implementation(project(":platforms:standalone"))
+    implementation(project(":platforms:bukkit"))
 }
 
 tasks {
@@ -23,7 +24,7 @@ tasks {
 
         manifest {
             attributes(
-                mapOf("Main-Class" to "com.deathmotion.packeteventsdetector.PEDetectorRunnable")
+                mapOf("Main-Class" to "com.deathmotion.packeteventsdetector.PEDetectorStandalone")
             )
         }
     }
