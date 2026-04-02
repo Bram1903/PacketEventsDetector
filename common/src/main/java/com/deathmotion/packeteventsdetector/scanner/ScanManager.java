@@ -3,7 +3,6 @@ package com.deathmotion.packeteventsdetector.scanner;
 import com.deathmotion.packeteventsdetector.PEDetectorPlatform;
 import com.deathmotion.packeteventsdetector.models.PEPlugin;
 import com.deathmotion.packeteventsdetector.models.ScannableFile;
-import lombok.Getter;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -12,26 +11,21 @@ import java.util.List;
 
 import static java.util.logging.Level.SEVERE;
 
-public class ScanManager<P> {
+public class ScanManager {
 
-    private final PEDetectorPlatform<P> platform;
+    private final PEDetectorPlatform platform;
 
-    @Getter
-    private final List<PEPlugin> plugins;
-
-    public ScanManager(PEDetectorPlatform<P> platform) {
+    public ScanManager(PEDetectorPlatform platform) {
         this.platform = platform;
-        this.plugins = new ArrayList<>();
-
         startScan();
     }
 
     private void startScan() {
         PEDetectorPlatform.getLogger().info("Starting scan...");
         List<ScannableFile> scannableFiles = platform.getFiles();
-
         PEDetectorPlatform.getLogger().info("Detected " + scannableFiles.size() + " files.");
 
+        final List<PEPlugin> plugins = new ArrayList<>();
         scannableFiles.parallelStream().forEach(file -> {
             try {
                 PEPlugin plugin;

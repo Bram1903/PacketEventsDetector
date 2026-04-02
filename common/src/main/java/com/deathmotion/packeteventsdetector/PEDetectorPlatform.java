@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.logging.*;
 
 @Getter
-public abstract class PEDetectorPlatform<P> {
+public abstract class PEDetectorPlatform {
 
     @Getter
-    private static PEDetectorPlatform<?> instance;
+    private static PEDetectorPlatform instance;
 
     @Getter
     private static Logger logger;
@@ -21,7 +21,7 @@ public abstract class PEDetectorPlatform<P> {
     @Setter
     public boolean standAlone = false;
 
-    private ScanManager<P> ScanManager;
+    private ScanManager ScanManager;
 
     /**
      * Sets up the custom logger to avoid extra metadata in log output.
@@ -50,7 +50,7 @@ public abstract class PEDetectorPlatform<P> {
         instance = this;
         setupLogger();
 
-        ScanManager = new ScanManager<>(this);
+        ScanManager = new ScanManager(this);
     }
 
     /**
@@ -58,13 +58,6 @@ public abstract class PEDetectorPlatform<P> {
      */
     public void commonOnDisable() {
     }
-
-    /**
-     * Gets the platform.
-     *
-     * @return The platform.
-     */
-    public abstract P getPlatform();
 
 
     public abstract List<ScannableFile> getFiles();

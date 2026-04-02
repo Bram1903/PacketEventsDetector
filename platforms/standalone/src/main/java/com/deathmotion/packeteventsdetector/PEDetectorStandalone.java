@@ -8,17 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PEDetectorStandalone extends PEDetectorPlatform<PEDetectorStandalone> {
+public class PEDetectorStandalone extends PEDetectorPlatform {
 
     public static void main(String[] args) {
         PEDetectorStandalone detector = new PEDetectorStandalone();
         detector.setStandAlone(true);
         detector.commonOnEnable();
-    }
-
-    @Override
-    public PEDetectorStandalone getPlatform() {
-        return this;
     }
 
     @Override

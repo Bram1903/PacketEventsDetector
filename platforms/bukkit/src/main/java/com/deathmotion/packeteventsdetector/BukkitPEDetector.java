@@ -10,17 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class BukkitPEDetector extends PEDetectorPlatform<JavaPlugin> {
+public class BukkitPEDetector extends PEDetectorPlatform {
 
     private final JavaPlugin plugin;
 
     public BukkitPEDetector(JavaPlugin plugin) {
         this.plugin = plugin;
-    }
-
-    @Override
-    public JavaPlugin getPlatform() {
-        return this.plugin;
     }
 
     @Override
