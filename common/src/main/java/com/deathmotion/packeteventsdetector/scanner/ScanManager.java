@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -19,6 +20,7 @@ import static java.util.logging.Level.SEVERE;
 public class ScanManager {
     private static final int MAX_SCAN_THREADS = 4;
     private static final AtomicInteger THREAD_COUNTER = new AtomicInteger();
+    private static final String LINE_SEPARATOR = System.lineSeparator();
 
     private final PEDetectorPlatform platform;
     private final ExecutorService scanExecutor;
@@ -31,27 +33,8 @@ public class ScanManager {
 
     public CompletableFuture<List<PEPlugin>> startScan() {
         PEDetectorPlatform.getLogger().info("Starting scan...");
-        List<ScannableFile> scannableFiles = platform.getFiles();
-        PEDetectorPlatform.getLogger().info("Detected " + scannableFiles.size() + " files.");
-
-        if (scannableFiles.isEmpty()) {
-            List<PEPlugin> emptyResult = Collections.emptyList();
-            logSummary(emptyResult);
-            scanExecutor.shutdown();
-            activeScan = CompletableFuture.completedFuture(emptyResult);
-            return activeScan;
-        }
-
-        List<CompletableFuture<PEPlugin>> scanTasks = scannableFiles.stream()
-                .map(this::createScanTask)
-                .collect(Collectors.toList());
-
-        CompletableFuture<List<PEPlugin>> scanFuture = CompletableFuture
-                .allOf(scanTasks.toArray(new CompletableFuture[0]))
-                .thenApply(ignored -> scanTasks.stream()
-                        .map(CompletableFuture::join)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList()))
+        CompletableFuture<List<PEPlugin>> scanFuture = platform.getFiles()
+                .thenCompose(this::startFileScan)
                 .whenComplete((plugins, throwable) -> {
                     try {
                         if (throwable == null) {
@@ -70,6 +53,23 @@ public class ScanManager {
 
         activeScan = scanFuture;
         return scanFuture;
+    }
+
+    private CompletableFuture<List<PEPlugin>> startFileScan(List<ScannableFile> scannableFiles) {
+        if (scannableFiles.isEmpty()) {
+            return CompletableFuture.completedFuture(Collections.emptyList());
+        }
+
+        List<CompletableFuture<PEPlugin>> scanTasks = scannableFiles.stream()
+                .map(this::createScanTask)
+                .collect(Collectors.toList());
+
+        return CompletableFuture.allOf(scanTasks.toArray(new CompletableFuture[0]))
+                .thenApply(ignored -> scanTasks.stream()
+                        .map(CompletableFuture::join)
+                        .filter(Objects::nonNull)
+                        .sorted(Comparator.comparing(PEPlugin::getName, String.CASE_INSENSITIVE_ORDER))
+                        .collect(Collectors.toList()));
     }
 
     public void shutdown() {
@@ -93,19 +93,12 @@ public class ScanManager {
                         }
                         return null;
                     }
-
-                    if (plugin != null) {
-                        PEDetectorPlatform.getLogger().info(
-                                "Detected plugin: " + plugin.getName() + " (PE: " + plugin.getVersion() + ")"
-                        );
-                    }
-
                     return plugin;
                 });
     }
 
     private PEPlugin scanFile(ScannableFile scannableFile) throws IOException {
-        if (platform.isStandAlone()) {
+        if (platform.shouldUseStaticDetection()) {
             return detectPluginStatic(scannableFile);
         }
 
@@ -113,14 +106,31 @@ public class ScanManager {
     }
 
     private void logSummary(List<PEPlugin> plugins) {
-        if (plugins.isEmpty()) {
-            PEDetectorPlatform.getLogger().info("No plugins using PacketEvents detected");
-            return;
+        StringBuilder message = new StringBuilder("Scan completed.");
+
+        if (!plugins.isEmpty()) {
+            message.append(LINE_SEPARATOR)
+                    .append("Detected plugins/mods using PacketEvents:");
+
+            for (PEPlugin plugin : plugins) {
+                message.append(LINE_SEPARATOR)
+                        .append(" - ")
+                        .append(plugin.getName())
+                        .append(" (PE: ")
+                        .append(plugin.getVersion())
+                        .append(')');
+            }
+        } else {
+            message.append(LINE_SEPARATOR)
+                    .append("No plugins or mods using PacketEvents detected.");
         }
 
-        PEDetectorPlatform.getLogger().info(
-                "Scan completed. Detected " + plugins.size() + " plugin(s) using PacketEvents."
-        );
+        message.append(LINE_SEPARATOR)
+                .append("Total detected: ")
+                .append(plugins.size())
+                .append(" plugin/mod(s).");
+
+        PEDetectorPlatform.getLogger().info(message.toString());
     }
 
     private int getWorkerCount() {

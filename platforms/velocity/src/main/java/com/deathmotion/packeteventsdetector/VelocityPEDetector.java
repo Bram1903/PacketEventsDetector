@@ -6,6 +6,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class VelocityPEDetector extends PEDetectorPlatform {
     private final ProxyServer server;
@@ -20,15 +21,15 @@ public class VelocityPEDetector extends PEDetectorPlatform {
     }
 
     @Override
-    public List<ScannableFile> getFiles() {
-        List<ScannableFile> files = new ArrayList<>();
+    public CompletableFuture<List<ScannableFile>> getFiles() {
+        List<ScannableSource> sources = new ArrayList<>();
 
         for (PluginContainer plugin : server.getPluginManager().getPlugins()) {
             Object pluginInstance = plugin.getInstance().orElse(null);
             String name = plugin.getDescription().getName().orElse(plugin.getDescription().getId());
-            addScannableFile(files, name, pluginInstance);
+            sources.add(scannableSource(name, pluginInstance));
         }
 
-        return files;
+        return createScannableFilesAsync(sources);
     }
 }

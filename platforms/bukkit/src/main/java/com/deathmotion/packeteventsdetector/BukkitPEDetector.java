@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class BukkitPEDetector extends PEDetectorPlatform {
@@ -23,13 +24,13 @@ public class BukkitPEDetector extends PEDetectorPlatform {
     }
 
     @Override
-    public List<ScannableFile> getFiles() {
-        List<ScannableFile> files = new ArrayList<>();
+    public CompletableFuture<List<ScannableFile>> getFiles() {
+        List<ScannableSource> sources = new ArrayList<>();
 
         for (Plugin installedPlugin : plugin.getServer().getPluginManager().getPlugins()) {
-            addScannableFile(files, installedPlugin.getName(), installedPlugin);
+            sources.add(scannableSource(installedPlugin.getName(), installedPlugin));
         }
 
-        return files;
+        return createScannableFilesAsync(sources);
     }
 }

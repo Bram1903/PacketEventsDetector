@@ -6,6 +6,7 @@ import org.spongepowered.plugin.PluginContainer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class SpongePEDetector extends PEDetectorPlatform {
     @Override
@@ -14,15 +15,15 @@ public class SpongePEDetector extends PEDetectorPlatform {
     }
 
     @Override
-    public List<ScannableFile> getFiles() {
-        List<ScannableFile> files = new ArrayList<>();
+    public CompletableFuture<List<ScannableFile>> getFiles() {
+        List<ScannableSource> sources = new ArrayList<>();
 
         for (PluginContainer plugin : Sponge.pluginManager().plugins()) {
             Object pluginInstance = plugin.instance();
             String name = plugin.metadata().name().orElse(plugin.metadata().id());
-            addScannableFile(files, name, pluginInstance);
+            sources.add(scannableSource(name, pluginInstance));
         }
 
-        return files;
+        return createScannableFilesAsync(sources);
     }
 }

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "packeteventsdetector",
+  "version": "${version}",
+  "name": "PacketEventsDetector",
+  "description": "Mod that tries to detect mods that shade PacketEvents.",
+  "authors": [
+    "Bram"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.deathmotion.packeteventsdetector.PEPDetectorFabric"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.13.0"
+  }
+}

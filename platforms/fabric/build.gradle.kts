@@ -4,12 +4,12 @@ plugins {
 
 repositories {
     maven {
-        url = uri("https://hub.spigotmc.org/nexus/content/groups/public/")
+        name = "fabric"
+        url = uri("https://maven.fabricmc.net/")
     }
 }
 
 dependencies {
     implementation(project(":common"))
-    compileOnly(libs.spigot)
-    annotationProcessor(libs.lombok)
+    compileOnly(libs.fabric)
 }

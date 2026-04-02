@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class PEDetectorStandalone extends PEDetectorPlatform {
@@ -17,16 +18,18 @@ public class PEDetectorStandalone extends PEDetectorPlatform {
     }
 
     @Override
-    public List<ScannableFile> getFiles() {
+    public CompletableFuture<List<ScannableFile>> getFiles() {
         File currentDir = new File(".");
         File[] filesArray = currentDir.listFiles();
 
-        if (filesArray == null) return Collections.emptyList();
+        if (filesArray == null) {
+            return CompletableFuture.completedFuture(Collections.emptyList());
+        }
 
-        return Arrays.stream(filesArray)
+        return CompletableFuture.supplyAsync(() -> Arrays.stream(filesArray)
+                .parallel()
                 .filter(file -> file.isFile() && file.getName().endsWith(".jar"))
                 .map(file -> new ScannableFile(file.getName(), getClass().getClassLoader(), file))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }
-

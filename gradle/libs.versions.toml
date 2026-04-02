@@ -1,18 +1,20 @@
 [versions]
-paper = "1.21.4-R0.1-SNAPSHOT"
+spigot = "1.8.8-R0.1-SNAPSHOT"
 velocity = "3.4.0-SNAPSHOT"
 bungeecord = "1.21-R0.4"
 sponge = "14.0.0"
+fabric = "0.13.0"
 lombok = "1.18.44"
 shadow = "9.4.1"
 run-paper = "3.0.2"
 spongeGradle = "2.3.0"
 
 [libraries]
-paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+spigot = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot" }
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
 bungeecord = { group = "net.md-5", name = "bungeecord-api", version.ref = "bungeecord" }
 sponge = { group = "org.spongepowered", name = "spongeapi", version.ref = "sponge" }
+fabric = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 
 [plugins]

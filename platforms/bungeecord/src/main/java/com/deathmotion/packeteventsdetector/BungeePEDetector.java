@@ -5,6 +5,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class BungeePEDetector extends PEDetectorPlatform {
     private final Plugin plugin;
@@ -19,13 +20,13 @@ public class BungeePEDetector extends PEDetectorPlatform {
     }
 
     @Override
-    public List<ScannableFile> getFiles() {
-        List<ScannableFile> files = new ArrayList<>();
+    public CompletableFuture<List<ScannableFile>> getFiles() {
+        List<ScannableSource> sources = new ArrayList<>();
 
         for (Plugin installedPlugin : plugin.getProxy().getPluginManager().getPlugins()) {
-            addScannableFile(files, installedPlugin.getDescription().getName(), installedPlugin);
+            sources.add(scannableSource(installedPlugin.getDescription().getName(), installedPlugin));
         }
 
-        return files;
+        return createScannableFilesAsync(sources);
     }
 }

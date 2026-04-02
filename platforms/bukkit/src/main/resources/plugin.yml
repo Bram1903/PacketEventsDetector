@@ -1,7 +1,7 @@
 name: PacketEventsDetector
 version: ${version}
 main: com.deathmotion.packeteventsdetector.PEPDetectorBukkit
-api-version: '1.21'
+api-version: '1.13'
 folia-supported: true
 author: "Bram"
 description: Plugin that tries to detect plugins that shade PacketEvents.
