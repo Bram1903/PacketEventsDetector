@@ -11,6 +11,9 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":platforms:standalone"))
     implementation(project(":platforms:bukkit"))
+    implementation(project(":platforms:velocity"))
+    implementation(project(":platforms:bungeecord"))
+    implementation(project(":platforms:sponge"))
 }
 
 tasks {

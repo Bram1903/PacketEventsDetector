@@ -1,0 +1,5 @@
+name: PacketEventsDetector
+version: ${version}
+main: com.deathmotion.packeteventsdetector.PEPDetectorBungee
+author: Bram
+description: Plugin that tries to detect plugins that shade PacketEvents.

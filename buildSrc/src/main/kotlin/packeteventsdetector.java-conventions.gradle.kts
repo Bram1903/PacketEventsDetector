@@ -11,7 +11,7 @@ repositories {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
     disableAutoTargetJvm()
 }
 
@@ -23,7 +23,7 @@ tasks {
 
     processResources {
         inputs.property("version", version)
-        filesMatching(listOf("plugin.yml")) {
+        filesMatching(listOf("plugin.yml", "bungee.yml", "velocity-plugin.json")) {
             expand("version" to version)
         }
     }

@@ -1,19 +1,15 @@
 package com.deathmotion.packeteventsdetector;
 
 import com.deathmotion.packeteventsdetector.models.ScannableFile;
-import lombok.Getter;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-public class BukkitPEDetector extends PEDetectorPlatform {
+public class BungeePEDetector extends PEDetectorPlatform {
+    private final Plugin plugin;
 
-    private final JavaPlugin plugin;
-
-    public BukkitPEDetector(JavaPlugin plugin) {
+    public BungeePEDetector(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -26,8 +22,8 @@ public class BukkitPEDetector extends PEDetectorPlatform {
     public List<ScannableFile> getFiles() {
         List<ScannableFile> files = new ArrayList<>();
 
-        for (Plugin installedPlugin : plugin.getServer().getPluginManager().getPlugins()) {
-            addScannableFile(files, installedPlugin.getName(), installedPlugin);
+        for (Plugin installedPlugin : plugin.getProxy().getPluginManager().getPlugins()) {
+            addScannableFile(files, installedPlugin.getDescription().getName(), installedPlugin);
         }
 
         return files;

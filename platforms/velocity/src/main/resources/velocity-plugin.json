@@ -1,0 +1,10 @@
+{
+  "id": "packeteventsdetector",
+  "name": "PacketEventsDetector",
+  "version": "${version}",
+  "description": "Plugin that tries to detect plugins that shade PacketEvents.",
+  "authors": [
+    "Bram"
+  ],
+  "main": "com.deathmotion.packeteventsdetector.PEPDetectorVelocity"
+}
