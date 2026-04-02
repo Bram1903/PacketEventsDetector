@@ -1,8 +1,8 @@
 [versions]
 paper = "1.21.4-R0.1-SNAPSHOT"
-lombok = "1.18.36"
-shadow = "9.1.0"
-run-paper = "2.3.1"
+lombok = "1.18.44"
+shadow = "9.4.1"
+run-paper = "3.0.2"
 
 [libraries]
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
